@@ -1,0 +1,15 @@
+.\objects\engine.o: engine.c
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL05Z4.h
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h
+.\objects\engine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\engine.o: C:\Users\piotr\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\system_MKL05Z4.h
+.\objects\engine.o: lcd1602.h
+.\objects\engine.o: frdm_bsp.h
+.\objects\engine.o: i2c.h
+.\objects\engine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\engine.o: engine.h
+.\objects\engine.o: keypad.h
+.\objects\engine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

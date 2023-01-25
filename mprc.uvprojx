@@ -545,6 +545,61 @@
               <FileType>5</FileType>
               <FilePath>.\rtc.h</FilePath>
             </File>
+            <File>
+              <FileName>chess.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\chess.c</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keypad.c</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keypad.h</FilePath>
+            </File>
+            <File>
+              <FileName>tpm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\tpm.c</FilePath>
+            </File>
+            <File>
+              <FileName>tpm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tpm.h</FilePath>
+            </File>
+            <File>
+              <FileName>ws2812.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ws2812.c</FilePath>
+            </File>
+            <File>
+              <FileName>ws2812.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ws2812.h</FilePath>
+            </File>
+            <File>
+              <FileName>clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>clock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\clock.h</FilePath>
+            </File>
+            <File>
+              <FileName>engine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\engine.c</FilePath>
+            </File>
+            <File>
+              <FileName>engine.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\engine.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
