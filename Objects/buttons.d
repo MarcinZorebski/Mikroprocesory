@@ -12,3 +12,4 @@
 .\objects\buttons.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\buttons.o: ws2812.h
 .\objects\buttons.o: clock.h
+.\objects\buttons.o: uart0.h

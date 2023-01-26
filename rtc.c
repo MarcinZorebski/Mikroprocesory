@@ -6,9 +6,9 @@
 void RTCInit(void)
 {
 	SIM->SCGC6 |= SIM_SCGC6_RTC_MASK;
-	RTC->CR|=RTC_CR_SWR_MASK; //softwarereset
+	RTC->CR|=RTC_CR_SWR_MASK; 
 	RTC->CR&=~RTC_CR_SWR_MASK;
-	SIM->SOPT1 &= ~SIM_SOPT1_OSC32KSEL_MASK; //oscillator selection
+	SIM->SOPT1 &= ~SIM_SOPT1_OSC32KSEL_MASK; 
 	RTC->CR|=RTC_CR_OSCE_MASK;
 	RTC->TSR = 0;
 	RTC->TAR = 0;;

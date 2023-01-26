@@ -147,6 +147,7 @@ return found;
 }
 
 struct rowcolumnpair{uint8_t row;uint8_t column;};
+
 void analyze()
 {
 	struct rowcolumnpair movelist[8];

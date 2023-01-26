@@ -30,8 +30,8 @@ struct Piece {
 
 struct Board {
 	struct Piece pieces[8][8];
-	char coordinate_letter[8];
-	char coordinate_number[8];
+	char column[8];
+	char row[8];
 };
 
 struct Board check(void);

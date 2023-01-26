@@ -1,4 +1,4 @@
-#include "keypad.h"
 
-void engine_init();
-void analyze(struct Board detected_board);
+
+struct Board generate_starting_board();
+char analyze(struct Board detected_board);

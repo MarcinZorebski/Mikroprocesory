@@ -1,20 +1,14 @@
 #include "MKL05Z4.h"
 #include "frdm_bsp.h"
 #include "lcd1602.h"
-#include "string.h"
 #include "stdio.h"
-#include "stdlib.h"
-#include "cmath"
-#include "stdbool.h"
 #include "buttons.h"
 #include "rtc.h"
 #include "tpm.h" 
 #include "ws2812.h"
-#include "stdbool.h"
 #include "keypad.h"
 #include "clock.h"
-
-//#define DEFAULT_SYSTEM_CLOCK 41943040u
+#include "uart0.h"
 
 
 int main()
@@ -26,6 +20,7 @@ int main()
 	TPM0_Init_OC();
 	clock_init();
 	keypad_init();
+	UART0_Init();
 	
 	while(1);
 

@@ -1,13 +1,12 @@
 #include "clock.h"
 #include "lcd1602.h"
-#include "keypad.h"
 #include "ws2812.h"
 #include "cmath"
 #include "stdio.h"
+#include "engine.h"
+#include "keypad.h"
 
-#define BTN1 1 //white side
-#define BTN2 2 
-#define BTN3 7 //black side
+#define BTN1 1 
 
 #define MIN_3 180
 #define MIN_5  300
@@ -22,16 +21,16 @@ uint8_t increment;
 uint8_t game_length = 0;
 uint8_t active_player = WHITE;
 uint16_t start_time;
-uint16_t white_time;
-uint16_t black_time;
+int16_t white_time;
+int16_t black_time;
 uint16_t minutes = 0;
 uint16_t seconds = 0;
+bool first_round = false;
 
-bool start_game = false;
+State game_state = WAITING;
 struct Board detected_board;
 
 volatile uint8_t num = 0;
-extern bool detect[8][8];
 
 char display[]={0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20};
 
@@ -96,40 +95,39 @@ void update_lcd(void) {
 }
 
 //navigate through game setup menu
-bool menu(uint32_t btn) {
-	if(btn & (1<<BTN1)){
-		if(game_length > 0) {
-			game_length--;
+State menu(uint32_t time) {
+	if(time > 3) {
+		if(game_state == FINISHED) {
+			game_state = WAITING;
+			game_length = 0;
+			update_lcd();
+			return game_state;
 		} else {
-			game_length = 6;
-		}
-		update_lcd();
-		return false;
-	} else if(btn & (1<<BTN2)) {
 			active_player = WHITE;
 			white_time = black_time = start_time;
-			start_game = true;
-			LCD1602_SetCursor(0,0);
-			LCD1602_Print("WHITE starts");
-			return start_game;
-	} else if(btn & (1<<BTN3)) {
-			if(game_length < 6) {
-				game_length++;
-			} else {
-				game_length = 0;
-			}
-			update_lcd();
-			return false;
+			game_state = ONGOING;
+			first_round = true;
+			return game_state;
+		}
+	} else {
+		if(game_length < 6) {
+			game_length++;
+		} else {
+			game_length = 0;
+		}
+		update_lcd();
+		game_state = WAITING;
+		return game_state;
 	}
 }
 
 //update game status: active player, increment, pieces position
 bool update_game(uint32_t btn) {
 	RTC->SR &= ~RTC_SR_TCE_MASK;
-	if(btn & (1<<BTN1)){
+	if(active_player == WHITE) {
 		white_time += increment;
 		active_player = BLACK;
-	}	else if(btn & (1<<BTN3)) {
+	} else {
 		black_time += increment;
 		active_player = WHITE;
 	}
@@ -139,7 +137,7 @@ bool update_game(uint32_t btn) {
 	num=0;
 	for(int i=0;i<8;i++)
 		{
-			for(int j=0;j<8;j++)
+			for(int j=7;j>-1;j--)
 			{
 				
 				if(detected_board.pieces[i][j].is_occupied == OCCUPIED)
@@ -150,30 +148,35 @@ bool update_game(uint32_t btn) {
 			}
 		}	
 	RTC->SR |= RTC_SR_TCE_MASK;
-  return start_game;	
+  return game_state;	
 }
 
 //update player's time and display it
 void update_time(void) {
-	if(!active_player) {
-		white_time--;
-		minutes = floor(white_time / 60);
-		seconds = white_time % 60;
-		sprintf(display,"WHITE   %u:%02u",minutes,seconds);
+	if(active_player == WHITE) {
+		if(first_round){
+			sprintf(display,"WHITE starts");
+			first_round = false;
+		} else {
+			white_time--;
+			minutes = floor(white_time / 60);
+			seconds = white_time % 60;
+			sprintf(display,"WHITE   %u:%02u",minutes,seconds);
+		}
 	} else {
 		black_time--;
 		minutes = floor(black_time / 60);
 		seconds = black_time % 60;
 		sprintf(display,"BLACK   %u:%02u",minutes,seconds);
 	}
-	if((white_time == 0) | (black_time ==0)) {
-		start_game = false;
-		// todo: display lose screen
-	} else {
-		LCD1602_ClearAll();
-		LCD1602_SetCursor(0,0);
-		LCD1602_Print(display);
-		LCD1602_SetCursor(15,1);
-		LCD1602_Print(">");
+	if((white_time < 0) | (black_time < 0)) {
+		game_state = FINISHED;
+		sprintf(display, "KONIEC CZASU");
 	}
+	LCD1602_ClearAll();
+	LCD1602_SetCursor(0,0);
+	LCD1602_Print(display);
+	LCD1602_SetCursor(15,1);
+	LCD1602_Print(">");
+
 }

@@ -38,11 +38,11 @@ NVIC_EnableIRQ(TPM0_IRQn);
 		num=0;
 for(int i=0;i<8;i++)
 	{
-		for(int j=0;j<8;j++)
+		for(int j=7;j>-1;j--)
 		{
 			
 			if(detect[i][j]==0)
-			setLed(num,0x00,0x00,0x6);
+			setLed(num,0x00,0x00,0x06);
 			else
 			setLed(num,0x00,0x00,0x00);
 			num=num+1;
