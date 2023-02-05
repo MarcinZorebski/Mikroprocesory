@@ -11,8 +11,10 @@
 .\objects\clock.o: lcd1602.h
 .\objects\clock.o: frdm_bsp.h
 .\objects\clock.o: i2c.h
-.\objects\clock.o: keypad.h
 .\objects\clock.o: ws2812.h
 .\objects\clock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cmath
 .\objects\clock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\clock.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\clock.o: engine.h
+.\objects\clock.o: keypad.h
+.\objects\clock.o: uart0.h

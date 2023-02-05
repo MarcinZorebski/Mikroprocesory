@@ -20,7 +20,7 @@
 16-black king
 */
 
-uint8_t current_board[8][8]=
+uint8_t curr_board[8][8]=
 {
 {14,12,13,15,16,13,12,14},
 {11,11,11,11,11,11,11,11},
@@ -31,7 +31,7 @@ uint8_t current_board[8][8]=
 {01,01,01,01,01,01,01,01},
 {04,02,03,05,06,03,02,04}
 };
-//czy prev board w ogole jest potrzebny?
+
 uint8_t prev_board[8][8]=
 {
 {14,12,13,15,16,13,12,14},
@@ -85,7 +85,6 @@ uint8_t checksetbit(uint8_t n)
 
 void substract(bool arr1[8][8],bool arr2[8][8])
 {
-	//tu tez sprawdzic czy nie musi byc globalnie deklarowana czy cos 
 	
 		for(int i=0;i<8;i++)
 	{
@@ -115,7 +114,7 @@ void copyprevboard()
 	{
 		for(int j=0;j<8;j++)
 		{
-			prev_board[i][j]=current_board[i][j];
+			prev_board[i][j]=curr_board[i][j];
 		}
 	}
 	
@@ -140,7 +139,6 @@ for(int i=0;i<8;i++)
 				rowmovedfrom=i;
 				columnmovedfrom=j;
 			}
-			//sprawdz czy to dobrze
 		}
 	}
 return found;
@@ -148,7 +146,7 @@ return found;
 
 struct rowcolumnpair{uint8_t row;uint8_t column;};
 
-void analyze()
+void analyze_board()
 {
 	struct rowcolumnpair movelist[8];
 	copyprevboard();
@@ -157,9 +155,8 @@ void analyze()
 	substract(current_detect_board,prev_detect_board);
 	if(search_array(subarray))
 	{
-		//nic nie zostalo zbite, jeszcze problem moze byc z rozszada, en passant, promocja
-	current_board[rowmovedfrom][columnmovedfrom]=0;
-		current_board[rowmovedto][columnmovedto]=prev_board[rowmovedfrom][columnmovedfrom];
+	curr_board[rowmovedfrom][columnmovedfrom]=0;
+		curr_board[rowmovedto][columnmovedto]=prev_board[rowmovedfrom][columnmovedfrom];
 	}
 	else
 	{
@@ -963,15 +960,13 @@ void analyze()
 			}
 				break;
 		}
-		//sprawdzic jak sie te playery przelaczaja czy nie jest tak ze najpierw sie zmieni player a potem dopiero sie posprawdza te zbicia!
 		if(countsetbits(possibilities)>1)
 			{
-				  //pytasiecozostalozbite
 			}
 			else
 			{
-				current_board[rowmovedfrom][columnmovedfrom]=0;
-				current_board[movelist[checksetbit(possibilities)].row][movelist[checksetbit(possibilities)].column]=prev_board[rowmovedfrom][columnmovedfrom];
+				curr_board[rowmovedfrom][columnmovedfrom]=0;
+				curr_board[movelist[checksetbit(possibilities)].row][movelist[checksetbit(possibilities)].column]=prev_board[rowmovedfrom][columnmovedfrom];
 			}
 	}
 

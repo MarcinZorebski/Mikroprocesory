@@ -42,7 +42,7 @@ for(int i=0;i<8;i++)
 		{
 			
 			if(detect[i][j]==0)
-			setLed(num,0x00,0x00,0x06);
+			setLed(num,0x00,0x00,0xFF);
 			else
 			setLed(num,0x00,0x00,0x00);
 			num=num+1;

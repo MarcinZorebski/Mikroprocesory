@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "engine.h"
 #include "keypad.h"
+#include "uart0.h"
 
 #define BTN1 1 
 
@@ -26,9 +27,11 @@ int16_t black_time;
 uint16_t minutes = 0;
 uint16_t seconds = 0;
 bool first_round = false;
+bool no_time = false;
 
 State game_state = WAITING;
 struct Board detected_board;
+char PGN[3] = {0};
 
 volatile uint8_t num = 0;
 
@@ -86,6 +89,7 @@ void update_lcd(void) {
 				break;
 				case 6:
 					LCD1602_Print("No time limit");
+					no_time = true;
 				break;
 			}
 			LCD1602_SetCursor(0,1);
@@ -100,11 +104,13 @@ State menu(uint32_t time) {
 		if(game_state == FINISHED) {
 			game_state = WAITING;
 			game_length = 0;
+			no_time = false;
 			update_lcd();
 			return game_state;
 		} else {
 			active_player = WHITE;
 			white_time = black_time = start_time;
+			detected_board = generate_starting_board();
 			game_state = ONGOING;
 			first_round = true;
 			return game_state;
@@ -133,7 +139,8 @@ bool update_game(uint32_t btn) {
 	}
 	RTC->TSR = 0;
 	RTC->TAR = 0;
-	detected_board = check();
+	check(&detected_board);
+	analyze(&detected_board, PGN);
 	num=0;
 	for(int i=0;i<8;i++)
 		{
@@ -141,42 +148,48 @@ bool update_game(uint32_t btn) {
 			{
 				
 				if(detected_board.pieces[i][j].is_occupied == OCCUPIED)
-					setLed(num,0x00,0x00,0x6);
+					setLed(num,0x00,0x00,0xFF);
 				else
 					setLed(num,0x00,0x00,0x00);
 					num=num+1;
 			}
 		}	
+	UART_send(PGN);
 	RTC->SR |= RTC_SR_TCE_MASK;
   return game_state;	
 }
 
 //update player's time and display it
 void update_time(void) {
-	if(active_player == WHITE) {
-		if(first_round){
-			sprintf(display,"WHITE starts");
-			first_round = false;
+	if(!no_time) {
+		if(active_player == WHITE) {
+			if(first_round){
+				sprintf(display,"WHITE starts");
+				first_round = false;
+			} else {
+				white_time--;
+				minutes = floor(white_time / 60);
+				seconds = white_time % 60;
+				sprintf(display,"WHITE   %u:%02u",minutes,seconds);
+			}
 		} else {
-			white_time--;
-			minutes = floor(white_time / 60);
-			seconds = white_time % 60;
-			sprintf(display,"WHITE   %u:%02u",minutes,seconds);
+			black_time--;
+			minutes = floor(black_time / 60);
+			seconds = black_time % 60;
+			sprintf(display,"BLACK   %u:%02u",minutes,seconds);
+		}
+		if((white_time < 0) | (black_time < 0)) {
+			game_state = FINISHED;
+			sprintf(display, "KONIEC CZASU");
 		}
 	} else {
-		black_time--;
-		minutes = floor(black_time / 60);
-		seconds = black_time % 60;
-		sprintf(display,"BLACK   %u:%02u",minutes,seconds);
-	}
-	if((white_time < 0) | (black_time < 0)) {
-		game_state = FINISHED;
-		sprintf(display, "KONIEC CZASU");
+		if(active_player == WHITE) {
+			sprintf(display, "WHITE");
+		} else {
+			sprintf(display, "BLACK");
+		}
 	}
 	LCD1602_ClearAll();
 	LCD1602_SetCursor(0,0);
 	LCD1602_Print(display);
-	LCD1602_SetCursor(15,1);
-	LCD1602_Print(">");
-
 }

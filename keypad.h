@@ -34,5 +34,5 @@ struct Board {
 	char row[8];
 };
 
-struct Board check(void);
+void check(struct Board *detected_board);
 void keypad_init(void);

@@ -10,4 +10,4 @@
 #define MCGIRCLK					0x03
 
 void UART0_Init(void);
-void UART_send(char PGN);
+void UART_send(char *PGN);

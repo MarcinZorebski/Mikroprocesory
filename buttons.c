@@ -30,7 +30,6 @@ void PORTB_IRQHandler(void)
 		} else if(game_status == FINISHED) {
 			game_status = update_game(press_time);
 		}
-		UART_send('A');
 		PORTB->PCR[BUT1] |= PORT_PCR_ISF_MASK;		
 	} 
 }

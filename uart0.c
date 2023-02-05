@@ -23,12 +23,12 @@ void UART0_Init(void)
 	UART0->C2 |= UART0_C2_TE_MASK;		
 }
 
-void UART_send(char PGN) {
+void UART_send(char *PGN) {
 	PORTB->PCR[1] = PORT_PCR_MUX(2);							
 	PORTB->PCR[2] = PORT_PCR_MUX(2);
 	
 	round_count++;
-	sprintf(rx_buf,"%d. %c. ", round_count, PGN);
+	sprintf(rx_buf,"%d. %c", round_count, *PGN);
 		for(i=0;rx_buf[i]!=0;i++)
 		{
 			while(!(UART0->S1 & UART0_S1_TDRE_MASK));

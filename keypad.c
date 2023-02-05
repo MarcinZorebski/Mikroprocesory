@@ -53,21 +53,20 @@ void keypad_init()
 }
 
 	
-struct Board check() {
-	struct Board detected_board;
+void check(struct Board *detected_board) {
 	for(int i=0;i<8;i++) {
 		PTA->PCOR|=(1<<key[i]);
 		if(i>0)
 			PTA->PSOR|=(1<<(key[i-1]));
 		for(int j=0;j<8;j++) {
 			if( ( ~(PTB->PDIR) & (1<<key[j+8]) ) == (1<<key[j+8]) ) {
-				detected_board.pieces[i][j].is_occupied = OCCUPIED;
+				detected_board->pieces[i][j].is_occupied = OCCUPIED;
 			} else {
-				detected_board.pieces[i][j].is_occupied = EMPTY;
+				detected_board->pieces[i][j].is_occupied = EMPTY;
 			}
 		}
 	}
 	PTA->PSOR|=(1<<key[7]);
-	return detected_board;
+	//return detected_board;
 }
 
